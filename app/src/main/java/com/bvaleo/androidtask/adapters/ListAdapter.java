@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bvaleo.androidtask.R;
 import com.bvaleo.androidtask.model.Film;
@@ -27,15 +26,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     private List<Film> mFilmLists;
     private Context mContext;
-    private PostItemListener mListener;
 
-    public ListAdapter(List<Film> mFilmLists, Context mContext, PostItemListener mListener) {
+    public ListAdapter(List<Film> mFilmLists, Context mContext) {
         this.mFilmLists = mFilmLists;
         this.mContext = mContext;
-        this.mListener = mListener;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class ViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.imageView)
         ImageView imageView;
         @BindView(R.id.name_rus)
@@ -43,23 +40,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         @BindView(R.id.name_eng)
         TextView nameEng;
 
-        PostItemListener mItemListener;
-
-        public ViewHolder(View itemView, PostItemListener postItemListener) {
+        public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
-            this.mItemListener = postItemListener;
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            Film film = getItem(getAdapterPosition());
-            Toast.makeText(mContext,
-                    film.getName(),
-                    Toast.LENGTH_SHORT).show();
-            notifyDataSetChanged();
         }
     }
 
@@ -88,15 +71,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
 
         View view = layoutInflater.inflate(R.layout.rv_item, parent, false);
-        ViewHolder vh = new ViewHolder(view, this.mListener);
+        ViewHolder vh = new ViewHolder(view);
 
         return vh;
 
-    }
-
-
-    public interface PostItemListener {
-        void onPostClick(long id);
     }
 
     public void updateAnswers(List<Film> items) {
@@ -104,7 +82,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    private Film getItem(int adapterPosition) {
+    public Film getItem(int adapterPosition) {
         return mFilmLists.get(adapterPosition);
     }
 }

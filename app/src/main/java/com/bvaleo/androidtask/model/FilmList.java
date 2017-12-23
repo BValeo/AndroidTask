@@ -2,7 +2,9 @@ package com.bvaleo.androidtask.model;
 
 import com.google.gson.annotations.Expose;
 
-public class FilmList {
+import io.realm.RealmModel;
+
+public class FilmList implements RealmModel {
 
     @Expose
     private java.util.List<Film> list = null;
